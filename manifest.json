@@ -12,7 +12,7 @@
 	  "<all_urls>",
 	  "storage",
 	  {
-	    "fileSystem" : ["directory", "retainEntries"]
+	    "fileSystem" : ["write", "directory", "retainEntries"]
 	  }
   ]
 }

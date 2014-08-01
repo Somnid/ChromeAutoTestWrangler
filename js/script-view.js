@@ -3,8 +3,9 @@ var ScriptView = (function(){
     var scriptView = {};
     scriptView.dom = {};
     bind(scriptView);
-    this.gatherSelectors();
-    this.getUserFolder();
+    scriptView.gatherSelectors();
+    scriptView.attachEvents();
+    scriptView.getUserFolder();
     return scriptView;
   }
   function bind(scriptView){
@@ -17,7 +18,7 @@ var ScriptView = (function(){
     this.dom.locationButton = document.getElementById("btn-location");
   }
   function attachEvents(){
-    this.dom.locationButon.addEventListener("click", this.editLocation);
+    this.dom.locationButton.addEventListener("click", this.editLocation);
   }
   function editLocation(){
     this.getUserFolder(true);
@@ -25,6 +26,9 @@ var ScriptView = (function(){
   function getUserFolder(force){
     FileSystem.getUserFolder(force).then(function(entry){
 		  this.fsRoot = entry;
+		  ConfigGenerator.generateConfigFromEntry(entry).then(function(entryText){
+		    
+		  })
 		}.bind(this));
   }
   return {

@@ -40,8 +40,42 @@ var FileSystem = (function(){
       });
     });
   }
+  function getFilesRecursive(entry){
+    return new Promise(function(resolve, reject){
+      var files = [];
+      if(entry.isDirectory){
+        var dirReader = entry.createReader();
+        dirReader.readEntries(function(results){
+          var promises = [];
+          if(results.length === 0){
+            resolve([]);
+          }else{
+            for(var i = 0 ; i < results.length; i++){
+              promises.push(getFilesRecursive(results[i]).then(function(subfiles){
+                files = files.concat(subfiles);
+              }));
+            }
+            Promise.all(promises).then(function(){
+              resolve(files);
+            });
+          }
+        });
+      }else{
+        resolve([entry]);
+      }
+    });
+  }
+  function saveFile(data, fsRoot, location){
+    return new Promise(function(resolve, reject){
+      fsRoot.getFile(location, function(){
+        
+      });
+    });
+  }
   return {
     getUserFolder : getUserFolder,
-    readFile : readFile
+    readFile : readFile,
+    getFilesRecursive : getFilesRecursive,
+    saveFile : saveFile
   };
 })();
