@@ -65,10 +65,26 @@ var FileSystem = (function(){
       }
     });
   }
+  function getFile(fsRoot, location, options){
+    return new Promise(function(resolve, reject){
+      fsRoot.getFile(location, { create : true }, resolve, reject);
+    });
+  }
+  function createWriter(entry){
+    return new Promise(function(resolve, reject){
+      entry.createWriter(resolve);
+    });
+  }
   function saveFile(data, fsRoot, location){
     return new Promise(function(resolve, reject){
-      fsRoot.getFile(location, function(){
-        
+      getFile(fsRoot, location, { create : true }).then(function(entry){
+        return createWriter(entry);
+      }).then(function(writer){
+        var blob = new Blob([data], {type: 'text/plain'});
+        writer.write(blob);
+        resolve();
+      }).catch(function(error){
+        console.log(error);
       });
     });
   }

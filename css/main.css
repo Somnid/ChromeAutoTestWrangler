@@ -4,6 +4,12 @@ html {
 	width: 100%;
 	height: 100%;
 }
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content : flex-start;
+  align-items : stretch;
+}
 #server-info {
   -webkit-user-select: text;
   display: block;
