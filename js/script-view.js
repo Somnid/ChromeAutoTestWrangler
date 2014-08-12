@@ -36,8 +36,8 @@ var ScriptView = (function(){
   function buildConfig(){
     ConfigGenerator.generateConfigFromEntry(this.fsRoot)
 		.then(function(entryText){
-		  return FileSystem.saveFile(entryText, fsRoot, "config/config.json");
-		}).then(function(){
+		  return FileSystem.saveFile(entryText, this.fsRoot, "config/config.json");
+		}.bind(this)).then(function(){
 		  console.log("complete");
 		});
   }
