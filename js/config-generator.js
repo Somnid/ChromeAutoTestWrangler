@@ -4,7 +4,8 @@ var ConfigGenerator = (function(){
       FileSystem.getFilesRecursive(entry).then(function(files){
         var pathTree = createPathTree(files);
         config = createConfigFromPathTree("", pathTree);
-        resolve(JSON.stringify(config));
+        config = JsonFormat.prettify(JSON.stringify(config));
+        resolve(config);
       });
     });
   }
@@ -29,8 +30,10 @@ var ConfigGenerator = (function(){
     if(pathTree.children.length > 0){
       item.subtests = [];
       for(var i = 0; i < pathTree.children.length; i++){
-        var subtest = createConfigFromPathTree(path, pathTree.children[i]);
-        item.subtests.push(subtest);
+        if(FileHelper.getExtension(path) == "js" || pathTree.children.length > 0){
+          var subtest = createConfigFromPathTree(path, pathTree.children[i]);
+          item.subtests.push(subtest);
+        }
       }
     }
     return item;
